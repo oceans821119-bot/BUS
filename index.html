@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>川崎小学校前 バス発車案内</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAE+UlEQVR4nO3dP3LTQBiGcYWhYDIUKXIMSmoOwHFyAAofgOPkAK5d5iAUFJQUmtF4JL2r/Sd93yc/vxYYi93Hu4oUW0/Pry8DsOaT9QHAL+KARByQiAMScUAiDkjEAemzyat+//3T5HVDu729H/yKT8dcBKOG7g5oZd84aOIA+1WyVxxkcbA9EukfR04WH5dr3xd9BN9+/dj8O30T6RlHOguC6CgdSq9EusWhyqCJXalKuvTRJ47VMsjiMKuJtPfRGgdZ+NE9kaY4lmWQhbllItV91F8+pwyflrNQfVmhMg7K8KxXHzXbyuyVyMKt2RZTur8UrxyUEchsdkrXj6Zb9pThX8sclcXBHZPoimawIA42lKCqN5fcOCgjtLo+as45KCOiilnLioNTjfPJmdPilYNlI67SuduOg2XjrDZntmzlYNmIrmgGN+Jg2Ti39PwWrBwsG+eQP4984g1SKg72lEeQmOXclYM95UwyZ5NtBRJxQCIOSDKO+/MUTjjO535O1TkpKwck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQByeaRGjlyvs35NHz+xoy7OB6qicn0v3ZVia9t5THLuOdqBLysHK4GxdY4FB6WEBcrB2UseRgT+zg8jIJP5iNjHwfcMo7D/M3hnO34WMZBGTkMR4ltBZKXH2Vnjn/ArjmHX3hhtnKwp+SzGiu2FUjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKARByQiAMScUBy+ok3hx//ekCsHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBySwOD4+MiMJqrFg5IBEHJMs42FlyGI6S8cpBH2m24+P01wRXrX5bvvNfKIx4zBP7OD4u180vfk88RGH8I4fD3X7M5suqixPS9CjkPF7D2yM42o/ZvIzBSRzDMHxcrqvDkT/rfvpoPGY1FMfzEsdoNiil8+2hj8ZjdpLFyP6cY2YanX9//lb889vbu+H5R12dt7f3Ly9fux9MO3dxtHP15gvN17YyqVs22v9ti4jHnOY0DnhAHJCIAxJxQCIOSMQByWkcLReFrC4oRTzmNKdxwAO/cdS9mWzfghGPOcFvHEP5qHkY5YjHrLiOYygZOz+jHPGYV3mPY8gbQW+jHPGYl2LclR3HcfXulNshjnjMMzHiGEUZ03sRj3kSYFuBFeKARByQiAMScUAiDkjEAYk4IBEHJOKAJOO4/2Tf5lckIJz7OVWf4mTlgEQckIgDUm4cnHacSeZspuLw8F0o2FtiltlWIBXEwc5yDvnzuBEHO8u5pee3bFth8YiuaAa342DxOKvNmS0+IWXxiKt07rLiYPE4n5w5rflRlsUjoopZy41jFhp9xDKbr8ytoGDloI+g6soYSrcVTj6iK5rBpsvnLB7+tcxRcRxsLoFUbyijp+fXl4pXXT6ZgK+jd2X5pq04JajcVpavxBLiR5cyhpZzDvrwqVcZQ/W2Mll98g1bjInVN2fLD5itcYxIxFb3LEZ94hj0gzBJZFdqK+9yRapbHMPWg1KppKP06V2va5U94xjlPH+PUCrknO/3vYTdP46Rw0dEn9sedzb2imNEIgfY74bXvnFMqKS7A26CHhTHDK1UOP6WuE0cCIFPvEEiDkjEAYk4IBEHJOKA9B9JOHvS3Z4npQAAAABJRU5ErkJggg==">
+<style>
+  :root{
+    --bg:#0a1410;
+    --panel:#0d1a14;
+    --led:#ffb400;
+    --led-dim:#5a4000;
+    --green:#3ea25a;
+    --green-dim:#1d3d27;
+    --text:#e8f0ea;
+    --sub:#7fa08c;
+    --warn:#ff5a3c;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
+    overscroll-behavior:none;
+    user-select:none;
+  }
+  body{
+    padding-top:calc(var(--safe-top) + 14px);
+    padding-bottom:calc(var(--safe-bottom) + 20px);
+    padding-left:16px; padding-right:16px;
+    display:flex; flex-direction:column; align-items:center;
+    min-height:100%;
+  }
+  .header{
+    width:100%; max-width:480px;
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:10px;
+  }
+  .stop-name{font-size:15px; font-weight:700; color:var(--sub); letter-spacing:.03em;}
+  .clock{font-size:13px; color:var(--sub); font-variant-numeric:tabular-nums; font-family:'SF Mono',Menlo,monospace;}
+
+  .board{
+    width:100%; max-width:480px;
+    background:radial-gradient(ellipse at top, #10241a 0%, #08120d 70%);
+    border:2px solid #1c3327;
+    border-radius:18px;
+    padding:22px 18px 18px;
+    box-shadow: inset 0 0 40px rgba(0,0,0,.5), 0 10px 30px rgba(0,0,0,.4);
+    position:relative;
+  }
+  .route-line{
+    font-family:'SF Mono',Menlo,monospace;
+    font-size:13px; color:var(--green);
+    letter-spacing:.06em;
+    margin-bottom:2px;
+  }
+  .destination{
+    font-size:20px; font-weight:800; color:var(--text);
+    margin-bottom:16px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .destination .arrow{color:var(--green);}
+
+  .countdown-label{
+    font-family:'SF Mono',Menlo,monospace;
+    font-size:12px; color:var(--sub); letter-spacing:.15em;
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .countdown{
+    font-family:'SF Mono',Menlo,monospace;
+    font-weight:700;
+    font-size:min(19vw, 88px);
+    line-height:1;
+    color:var(--led);
+    text-shadow: 0 0 6px rgba(255,180,0,.55), 0 0 22px rgba(255,180,0,.25);
+    letter-spacing:.01em;
+    text-align:center;
+    padding:14px 0 8px;
+    transition:color .3s;
+  }
+  .countdown.urgent{
+    color:var(--warn);
+    text-shadow: 0 0 8px rgba(255,90,60,.7), 0 0 26px rgba(255,90,60,.35);
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.55;} }
+
+  .next-time{
+    text-align:center; font-size:14px; color:var(--sub);
+    font-family:'SF Mono',Menlo,monospace;
+    margin-bottom:2px;
+  }
+  .next-time b{color:var(--text); font-size:16px;}
+
+  .divider{
+    height:1px; background:linear-gradient(90deg, transparent, #1c3327, transparent);
+    margin:18px 0 14px;
+  }
+
+  .upcoming-title{
+    font-size:11px; color:var(--sub); letter-spacing:.1em; margin-bottom:8px;
+    font-family:'SF Mono',Menlo,monospace;
+  }
+  .upcoming-list{
+    display:flex; flex-direction:column; gap:0;
+  }
+  .upcoming-item{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 2px;
+    border-bottom:1px solid #142219;
+    font-family:'SF Mono',Menlo,monospace;
+  }
+  .upcoming-item:last-child{border-bottom:none;}
+  .upcoming-item .t{font-size:16px; color:var(--text); font-weight:600;}
+  .upcoming-item .rel{font-size:12px; color:var(--green);}
+
+  .controls{
+    width:100%; max-width:480px;
+    display:flex; gap:10px; margin-top:16px;
+  }
+  .seg{
+    flex:1; display:flex; background:var(--panel); border-radius:12px; padding:4px;
+    border:1px solid #1c3327;
+  }
+  .seg button{
+    flex:1; padding:10px 6px; border:none; background:transparent; color:var(--sub);
+    font-size:13px; font-weight:700; border-radius:9px;
+    font-family:inherit;
+  }
+  .seg button.active{background:var(--green-dim); color:var(--green);}
+
+  .icon-btn{
+    width:44px; height:44px; border-radius:12px; background:var(--panel);
+    border:1px solid #1c3327; color:var(--sub); font-size:18px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .icon-btn:active{background:var(--green-dim);}
+
+  .realtime-btn{
+    width:100%; max-width:480px; margin-top:12px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    padding:15px; border-radius:14px; text-decoration:none;
+    background:var(--green-dim); color:var(--green); border:1px solid var(--green);
+    font-size:16px; font-weight:800;
+  }
+  .realtime-btn:active{opacity:.7;}
+  .realtime-btn .dot{width:9px; height:9px; border-radius:50%; background:var(--green); animation:pulse 1.4s infinite;}
+  .footnote{
+    width:100%; max-width:480px;
+    font-size:11px; color:#4c6659; text-align:center; margin-top:14px; line-height:1.6;
+  }
+
+  /* Modal (custom, no native dialogs — iOS PWA safe) */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.6);
+    display:none; align-items:flex-end; justify-content:center; z-index:100;
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.show{display:flex;}
+  .modal-sheet{
+    width:100%; max-width:480px; background:#0d1a14;
+    border:1px solid #1c3327; border-top-left-radius:20px; border-top-right-radius:20px;
+    padding:20px 20px calc(20px + var(--safe-bottom));
+    animation: slideup .25s ease-out;
+  }
+  @keyframes slideup{ from{transform:translateY(100%);} to{transform:translateY(0);} }
+  .modal-sheet h3{margin:0 0 10px; font-size:16px; color:var(--text);}
+  .modal-sheet p{margin:0 0 14px; font-size:13px; color:var(--sub); line-height:1.7;}
+  .modal-sheet button{
+    width:100%; padding:13px; border:none; border-radius:12px;
+    background:var(--green-dim); color:var(--green); font-weight:700; font-size:14px;
+    font-family:inherit; margin-top:6px;
+  }
+  .toast{
+    position:fixed; bottom:calc(24px + var(--safe-bottom)); left:50%; transform:translateX(-50%);
+    background:#12241c; color:var(--green); border:1px solid #1c3327;
+    padding:10px 18px; border-radius:10px; font-size:13px; z-index:200;
+    opacity:0; pointer-events:none; transition:opacity .25s;
+  }
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="stop-name">川崎小学校前 標柱2</div>
+  <div class="clock" id="clock">--:--:--</div>
+</div>
+
+<div class="board">
+  <div class="route-line" id="routeLine">川15 ・ 川17 ・ 川40</div>
+  <div class="destination"><span class="arrow">→</span> 川崎駅</div>
+
+  <div class="countdown-label" id="cdLabel">次のバスまで</div>
+  <div class="countdown" id="countdown">--:--</div>
+  <div class="next-time" id="nextTime">&nbsp;</div>
+
+  <div class="divider"></div>
+
+  <div class="upcoming-title">この後の発車</div>
+  <div class="upcoming-list" id="upcomingList"></div>
+</div>
+
+<div class="controls">
+  <div class="seg" id="daySeg">
+    <button data-mode="auto" class="active">自動</button>
+    <button data-mode="weekday">平日</button>
+    <button data-mode="holiday">土休日</button>
+  </div>
+  <button class="icon-btn" id="shareBtn" title="LINEで共有">↗︎</button>
+  <button class="icon-btn" id="infoBtn" title="ホーム画面に追加">＋</button>
+</div>
+
+<a class="realtime-btn" target="_blank" rel="noopener"
+   href="https://kcbn.bus-navigation.jp/wgsys/wgs/bus.htm?tabName=signpoleTab&amp;selectedLandmarkCatCd=&amp;from=%E5%B7%9D%E5%B4%8E%E5%B0%8F%E5%AD%A6%E6%A0%A1%E5%89%8D&amp;fromType=&amp;to=&amp;toType=&amp;locale=ja&amp;fromlat=&amp;fromlng=&amp;tolat=&amp;tolng=&amp;sortBy=3&amp;routeLayoutCd=&amp;fromSignpoleKey=144634&amp;bsid=2&amp;mapFlag=false&amp;existYn=&amp;routeKey=&amp;nextDiagramFlag=0&amp;diaRevisedDate=&amp;routeKeyBfr=&amp;routeKeyAft=&amp;busCode=&amp;tramSearchFlg=">
+  <span class="dot"></span>リアルタイム接近情報を見る(市バスナビ)
+</a>
+
+<div class="footnote" id="footnote">R7.04.01改正 川崎市交通局 塩浜営業所 044-288-0972</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-sheet">
+    <h3 id="modalTitle"></h3>
+    <p id="modalBody"></p>
+    <button id="modalClose">閉じる</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---- Timetable data (川崎小学校前 標柱2 → 川崎駅 / 川15・川17・川40) ----
+const TIMETABLE = {
+  weekday: {
+    5:[18,48,58], 6:[8,19,27,35,42,50,56],
+    7:[2,8,12,17,22,27,32,37,38,42,47,51,56,59],
+    8:[2,7,13,14,20,23,27,32,38,42,48,54],
+    9:[0,6,10,17,25,30,37,44,52],
+    10:[1,10,18,27,38,45,53],
+    11:[1,9,17,26,35,44,53],
+    12:[1,10,18,27,37,46,53],
+    13:[0,8,17,27,36,44,54],
+    14:[1,10,17,20,29,36,44,50,57],
+    15:[5,13,20,28,35,43,50,57],
+    16:[2,9,16,23,30,36,44,49,55],
+    17:[2,9,13,23,31,37,44,51,57],
+    18:[3,12,18,26,32,39,48,56],
+    19:[5,15,23,32,39,49,56],
+    20:[3,14,25,33,44,55],
+    21:[6,16,28,37,48],
+    22:[2,17,33,48],
+    23:[]
+  },
+  holiday: {
+    5:[30,48], 6:[9,27,43,55],
+    7:[7,17,28,37,46,57],
+    8:[7,17,28,41,44,53],
+    9:[3,12,20,30,39,52],
+    10:[3,13,25,37,44,54],
+    11:[3,14,23,35,45,54],
+    12:[4,13,24,34,41,51],
+    13:[0,10,22,30,42,50,59],
+    14:[8,18,28,38,48,58],
+    15:[7,14,22,32,40,51,58],
+    16:[8,14,22,33,40,47,56],
+    17:[3,12,20,30,40,48,56],
+    18:[5,13,23,31,41,50,59],
+    19:[8,19,30,40,58],
+    20:[13,24,40,53],
+    21:[8,25,43],
+    22:[0,18,35],
+    23:[]
+  }
+};
+
+let dayMode = localStorage.getItem('kwsk_bus_mode') || 'auto';
+
+function isHolidayToday(d){
+  const day = d.getDay(); // 0 Sun, 6 Sat
+  return day === 0 || day === 6;
+}
+function activeSchedule(now){
+  if(dayMode === 'weekday') return {key:'weekday', label:'平日ダイヤ'};
+  if(dayMode === 'holiday') return {key:'holiday', label:'土休日ダイヤ'};
+  return isHolidayToday(now) ? {key:'holiday', label:'土休日ダイヤ（自動）'} : {key:'weekday', label:'平日ダイヤ（自動）'};
+}
+
+function flattenFromNow(schedKey, now){
+  // build list of Date objects for today's remaining departures + tomorrow's (same schedule type approx) to always have upcoming
+  const table = TIMETABLE[schedKey];
+  const results = [];
+  const todayY = now.getFullYear(), todayM = now.getMonth(), todayD = now.getDate();
+  for(let h=0; h<=23; h++){
+    const mins = table[h] || [];
+    for(const m of mins){
+      const dt = new Date(todayY, todayM, todayD, h, m, 0);
+      if(dt.getTime() > now.getTime()) results.push(dt);
+    }
+  }
+  // if fewer than 5 remain today, pull from tomorrow using the schedule appropriate for tomorrow (auto mode aware)
+  if(results.length < 5){
+    const tomorrow = new Date(todayY, todayM, todayD+1);
+    let tKey = schedKey;
+    if(dayMode === 'auto'){
+      tKey = isHolidayToday(tomorrow) ? 'holiday' : 'weekday';
+    }
+    const tTable = TIMETABLE[tKey];
+    for(let h=0; h<=23 && results.length<10; h++){
+      const mins = tTable[h] || [];
+      for(const m of mins){
+        const dt = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), h, m, 0);
+        results.push(dt);
+      }
+    }
+  }
+  return results;
+}
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function formatCountdown(sec){
+  if(sec < 0) sec = 0;
+  const h = Math.floor(sec/3600);
+  const m = Math.floor((sec%3600)/60);
+  const s = sec%60;
+  if(h > 0) return `${h}:${pad(m)}:${pad(s)}`;
+  return `${pad(m)}:${pad(s)}`;
+}
+function formatRel(sec){
+  const m = Math.floor(sec/60);
+  if(m < 1) return 'まもなく';
+  if(m < 60) return `あと${m}分`;
+  const h = Math.floor(m/60), r = m%60;
+  return `あと${h}時間${r}分`;
+}
+
+function render(){
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+  const sched = activeSchedule(now);
+  document.getElementById('cdLabel').textContent = sched.label + ' ・ 次のバスまで';
+
+  const upcoming = flattenFromNow(sched.key, now).slice(0, 6);
+  const cdEl = document.getElementById('countdown');
+  const nextTimeEl = document.getElementById('nextTime');
+  const listEl = document.getElementById('upcomingList');
+
+  if(upcoming.length === 0){
+    cdEl.textContent = '--:--';
+    nextTimeEl.innerHTML = '&nbsp;';
+    listEl.innerHTML = '<div class="upcoming-item"><span class="t">本日の運行は終了しました</span></div>';
+    return;
+  }
+
+  const next = upcoming[0];
+  const diffSec = Math.max(0, Math.round((next.getTime() - now.getTime())/1000));
+  cdEl.textContent = formatCountdown(diffSec);
+  cdEl.classList.toggle('urgent', diffSec <= 120);
+
+  const isTomorrow = next.getDate() !== now.getDate();
+  nextTimeEl.innerHTML = `<b>${pad(next.getHours())}:${pad(next.getMinutes())}</b> 発${isTomorrow ? '（翌日）' : ''}`;
+
+  listEl.innerHTML = upcoming.slice(1).map(dt=>{
+    const s = Math.round((dt.getTime()-now.getTime())/1000);
+    const tmr = dt.getDate() !== now.getDate() ? '（翌）' : '';
+    return `<div class="upcoming-item"><span class="t">${pad(dt.getHours())}:${pad(dt.getMinutes())}${tmr}</span><span class="rel">${formatRel(s)}</span></div>`;
+  }).join('');
+}
+
+// day mode toggle
+document.getElementById('daySeg').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  dayMode = btn.dataset.mode;
+  localStorage.setItem('kwsk_bus_mode', dayMode);
+  [...document.querySelectorAll('#daySeg button')].forEach(b=>b.classList.toggle('active', b===btn));
+  render();
+});
+
+// custom modal helpers (no native alert/confirm — broken in iOS standalone PWA)
+function showModal(title, body){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').textContent = body;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+document.getElementById('modalClose').addEventListener('click', ()=>{
+  document.getElementById('modalOverlay').classList.remove('show');
+});
+document.getElementById('modalOverlay').addEventListener('click', (e)=>{
+  if(e.target.id === 'modalOverlay') e.currentTarget.classList.remove('show');
+});
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+document.getElementById('infoBtn').addEventListener('click', ()=>{
+  const isStandalone = window.navigator.standalone === true;
+  if(isStandalone){
+    showModal('ホーム画面に追加済み', 'このアプリはすでにホーム画面から起動しています。');
+  } else {
+    showModal('ホーム画面に追加', 'Safariの共有ボタン（□に↑）をタップし、「ホーム画面に追加」を選択してください。追加するとアプリのように起動できます。');
+  }
+});
+
+document.getElementById('shareBtn').addEventListener('click', ()=>{
+  const now = new Date();
+  const sched = activeSchedule(now);
+  const upcoming = flattenFromNow(sched.key, now).slice(0,3);
+  const text = upcoming.length
+    ? `【川崎小学校前 発車案内】\n次のバス: ${pad(upcoming[0].getHours())}:${pad(upcoming[0].getMinutes())}\n行先: 川崎駅（川15/川17/川40）\n\n`
+    : '本日の運行は終了しました。';
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>{
+      showToast('コピーしました。LINEに貼り付けて送信できます');
+      setTimeout(()=>{ window.location.href = 'line://msg/text/' + encodeURIComponent(text); }, 400);
+    }).catch(()=>{
+      showModal('共有', text);
+    });
+  } else {
+    showModal('共有', text);
+  }
+});
+
+render();
+setInterval(render, 1000);
+</script>
+</body>
+</html>
