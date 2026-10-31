@@ -301,6 +301,7 @@ function renderFilters(stop){
 function renderLoc(){
   const t=document.getElementById('locText');
   if(gpsState==='pending'){ t.textContent='現在地を確認中…'; return; }
+  if(gpsState==='tap'){ t.textContent='◎ボタンで現在地を取得'; return; }
   if(gpsState!=='ok'){ t.textContent= gpsState==='denied'?'位置情報オフ(手動で選択)':'現在地を取得できません'; return; }
   const st=activeStop();
   const d=distM(userPos,st);
@@ -368,11 +369,37 @@ function renderAll(){ renderStops(); renderFilters(activeStop()); renderDaySeg()
 function renderDaySeg(){ document.querySelectorAll('#daySeg button').forEach(b=>b.classList.toggle('active',b.dataset.mode===dayMode)); }
 
 // ===== 位置情報 =====
+// 前回の位置を保存しておき、30分以内なら再取得しない(=確認ダイアログを出さない)
+const POS_TTL = 30*60*1000;
+const cachedPos = lsGet('pos', null);
+if(cachedPos && Date.now()-cachedPos.t < POS_TTL){ userPos=cachedPos; gpsState='ok'; }
+
+// すでに許可済みかどうかを確認(許可済みなら自動取得してもダイアログは出ない)
+async function permState(){
+  try{
+    if(navigator.permissions && navigator.permissions.query){
+      const r = await navigator.permissions.query({name:'geolocation'});
+      return r.state; // 'granted' | 'prompt' | 'denied'
+    }
+  }catch(e){}
+  return 'unknown';
+}
+
+// 自動取得: 許可済み かつ 保存位置が古い時だけ
+async function autoGPS(){
+  if(stopMode!=='gps') return;
+  if(userPos && userPos.t && Date.now()-userPos.t < POS_TTL) return;
+  const st = await permState();
+  if(st==='granted') requestGPS(false);
+  else if(!userPos){ gpsState = st==='denied' ? 'denied' : 'tap'; renderAll(); }
+}
+
 function requestGPS(manual){
   if(!('geolocation' in navigator)){ gpsState='unavailable'; renderAll(); return; }
   if(manual){ gpsState='pending'; renderLoc(); }
   navigator.geolocation.getCurrentPosition(p=>{
-    userPos={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy};
+    userPos={lat:p.coords.latitude,lng:p.coords.longitude,acc:p.coords.accuracy,t:Date.now()};
+    lsSet('pos',userPos);
     gpsState='ok'; renderAll();
     if(manual) toast(`現在地を更新しました(精度 約${Math.round(p.coords.accuracy)}m)`);
   },err=>{
@@ -389,7 +416,7 @@ function requestGPS(manual){
 document.getElementById('stops').addEventListener('click',e=>{
   const b=e.target.closest('.stop-tab'); if(!b) return;
   stopMode=b.dataset.id; lsSet('stopMode',stopMode);
-  if(stopMode==='gps') requestGPS(false);
+  if(stopMode==='gps') autoGPS();
   renderAll();
 });
 document.getElementById('filters').addEventListener('click',e=>{
@@ -422,10 +449,10 @@ document.getElementById('mClose').onclick=()=>document.getElementById('modal').c
 document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('show');};
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
-document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ if(stopMode==='gps') requestGPS(false); render(); } });
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ autoGPS(); render(); } });
 
 renderAll();
-requestGPS(false);
+autoGPS();
 setInterval(render,1000);
 </script>
 </body>
